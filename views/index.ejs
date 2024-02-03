@@ -1,0 +1,87 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  <div class="form">
+    <form action="/url" method="post">
+      <input type="text" name="inputurl">
+      <button type="submit">Shorten</button><br><br>
+    </form>
+  </div>
+
+
+</body> 
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Rubik&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="main">
+    <h1>Shorten <br> <span>your URL</span> </h1>
+    <div class="display">
+        <input type="text" id="inputurl" placeholder="URL" name="inputurl">
+        <img src = "/images/copy.png" id="copy">
+    </div>
+    <div class="generate">
+        <button type="button" id="btn" onclick="submitForm()"><img src="/images/generate.png" alt="">Shorten</button>
+    </div>
+    <div class="copied">
+      <p>Copied</p>
+      <p><i class="arrow down"></i></p>
+
+  </div>
+</div>
+    
+<script>
+  const inputbox= document.getElementById('inputurl');
+
+    function submitForm() { 
+      
+      const inputUrl = document.getElementById('inputurl').value;
+
+      // Perform AJAX request to send data to the server
+      $.ajax({
+        type: 'POST',
+        url: '/url', // Update the URL to your server endpoint
+        data: { inputurl: inputUrl },
+        success: function(response) {
+          // console.log(response); // Log the server response
+          // Handle the response or update the UI as needed
+          // console.log(response.newurl.shortId);
+          document.getElementById('inputurl').value = "http://localhost:3000/"+response.newurl.shortId;
+
+        }, 
+        error: function(error) {
+          console.error('Error:', error);
+          // Handle the error or update the UI for error cases
+        }
+      });
+    }
+
+    document.getElementById('copy').addEventListener('click',function(){
+    inputbox.select();
+    document.execCommand("copy");
+    document.querySelector(".copied").style.display = "block";
+    setTimeout(function () {
+        document.querySelector(".copied").style.display = "none";
+    }, 500);
+    })
+
+</script>
+</body>
+</html>
